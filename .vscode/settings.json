@@ -1,0 +1,44 @@
+{
+    // C语言文件的特定设置
+    "[c]": {
+        // 设置缩进大小 
+        "editor.tabSize": 4,
+        // "editor.detectIndentation":true,
+        // 
+        "editor.insertSpaces": false,
+        // 在第80列显示标尺，提醒不要超过80字符宽度（Linux内核规范）
+        "editor.rulers": [
+            80
+        ],
+        // 保存文件时自动格式化
+        "editor.formatOnSave": false,
+    },
+    // C++语言文件的特定设置（与C语言类似）
+    "[cpp]": {
+        // 设置缩进大小  
+        "editor.tabSize": 4,
+        "editor.insertSpaces": false,
+        // 在第80列显示标尺
+        "editor.rulers": [
+            80
+        ],
+        // 保存文件时自动格式化
+        "editor.formatOnSave": false,
+    },
+    "files.associations": {
+        "timer2.h": "c",
+        "my_config.h": "c",
+        "rf_recv.h": "c",
+        "debug.h": "c",
+        "include.h": "c",
+        "pwm.h": "c",
+        "time0.h": "c",
+        "key_driver.h": "c",
+        "timer1.h": "c",
+        "knob_dimming.h": "c",
+        "flash.h": "c",
+        "fan_ctl.h": "c",
+        "typedef.h": "c",
+        "adc.h": "c"
+    }
+}

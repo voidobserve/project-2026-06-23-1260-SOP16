@@ -1,0 +1,8 @@
+[04-23 08:49:52]Log start
+[04-23 08:49:52]Serial init start!
+[04-23 08:49:52]Set TXLink uart baud failed!
+[04-23 08:49:52]uart isd baud set api failed!
+[06-23 11:04:34]DllUv3Cap:0x2
+[06-23 11:04:34]DllUv3Cap:0x64
+[06-23 11:05:56]DllUv3Cap:0x2
+[06-23 11:05:56]DllUv3Cap:0x64
