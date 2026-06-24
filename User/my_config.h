@@ -48,20 +48,20 @@ enum
     // // TEMP_75_30MIN, // 超过75摄氏度（±5摄氏度）30min
     // TEMP_75_5_MIN, // 超过75摄氏度（±5摄氏度）5min
 
-    TEMP_STATUS_NORMAL,  // 默认状态，温度正常 
-    TEMP_STATUS_OVER_90,       // 超过 90 摄氏度（±5摄氏度） 
-    TEMP_STATUS_OVER_90_5_MIN, // 超过 90 摄氏度（±5摄氏度）5min 
+    TEMP_STATUS_NORMAL,        // 默认状态，温度正常
+    TEMP_STATUS_OVER_90,       // 超过 90 摄氏度（±5摄氏度）
+    TEMP_STATUS_OVER_90_5_MIN, // 超过 90 摄氏度（±5摄氏度）5min
 };
- 
-#define ADC_VAL_WHEN_UNSTABLE (2243)          // 9脚检测到电压不稳定、发动机功率不足时，对应的的阈值，大于该值就认为不稳定
 
+#define ADC_VAL_WHEN_UNSTABLE (2243) // 9脚检测到电压不稳定、发动机功率不足时，对应的的阈值，大于该值就认为不稳定
+
+#if 0
 #define TEMP_PULL_UP_RESISTOR_VALUE ((u32)10000) // 温度检测脚外部的上拉电阻阻值，单位：欧姆
 /*
     温度超过 90 摄氏度时，
     温度检测脚外部的下拉热敏电阻阻值（这里取中心值），单位：欧姆
 */
-#define TEMP_PULL_DOWN_RESISTOR_VALUE ((u32)8824)
-
+#define TEMP_PULL_DOWN_RESISTOR_VALUE ((u32)8824) 
 /*
     温度超过 90 摄氏度时，对应的ad值阈值（前提条件：adc检测使用的参考电压为VCC）
 
@@ -76,6 +76,17 @@ enum
 #define ADC_VAL_WHEN_TEMP_OVER_90                     \
     (u16)((u32)TEMP_PULL_DOWN_RESISTOR_VALUE * 4096 / \
           (TEMP_PULL_UP_RESISTOR_VALUE + TEMP_PULL_DOWN_RESISTOR_VALUE))
+#endif
+
+/*
+    直接使用客户测得的数据，
+    74 摄氏度,对应的电压是 3.1 V
+    75 摄氏度时检测脚电压 3.0 V
+    90 摄氏度时检测脚电压 2.38 V
+*/
+#define ADC_REV_VOLTAGE_IN_TEMPERATURE_SCAN ((u16)4200) // 检测温度时，adc使用的参考电压，单位：mV
+#define ADC_VAL_WHEN_TEMP_OVER_90 \
+    (u16)((u32)2380 * 4096 / ADC_REV_VOLTAGE_IN_TEMPERATURE_SCAN)
 
 #if 0
 

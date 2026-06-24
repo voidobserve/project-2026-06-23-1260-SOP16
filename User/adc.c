@@ -49,70 +49,52 @@ void adc_config(void)
 
 void adc_channel_sel(u8 adc_sel_pin)
 {
-    __EnableIRQ(ADC_IRQn); // 使能ADC中断
-    IE_EA = 1;             // 使能总中断
+    ADC_ACON1 &= ~(ADC_VREF_SEL(0x7) |   // 清除选择的参考电压
+                   ADC_INREF_SEL(0x01) | // 不选择内部参考电压 内部参考电压不使能
+                   ADC_EXREF_SEL(0x01)); // 不选择外部参考电压 外部参考电压不使能
+
+    ADC_ACON0 = ADC_CMP_EN(0x1) |  // 打开ADC中的CMP使能信号
+                ADC_BIAS_EN(0x1) | // 打开ADC偏置电流能使信号
+                ADC_BIAS_SEL(0x1); // 偏置电流：1x
 
     switch (adc_sel_pin)
     {
     case ADC_SEL_PIN_ENGINE:
-    {
-        // ADC配置
-        ADC_ACON1 &= ~(ADC_VREF_SEL(0x7) | ADC_EXREF_SEL(0x01)); // 关闭外部参考电压
-        ADC_ACON1 |= ADC_VREF_SEL(0x5) |                         // 选择内部参考电压 4.2V (用户手册说未校准)
-                     ADC_TEN_SEL(0x3);                           /* 关闭测试信号 */
-        ADC_ACON0 = ADC_CMP_EN(0x1) |                            // 打开ADC中的CMP使能信号
-                    ADC_BIAS_EN(0x1) |                           // 打开ADC偏置电流能使信号
-                    ADC_BIAS_SEL(0x1);                           // 偏置电流：1x
-        ADC_CHS0 = ADC_ANALOG_CHAN(0x17) |                       // 选则引脚对应的通道（0x17--P27）
-                   ADC_EXT_SEL(0x0);                             // 选择外部通道
-    }
-    break;
+        ADC_ACON1 |= ADC_INREF_SEL(0x01) | // 选择内部参考电压 内部参考电压使能
+                     ADC_VREF_SEL(0x5) |   // 选择内部参考电压 4.2V (用户手册说未校准)
+                     ADC_TEN_SEL(0x3);     /* 关闭测试信号 */
+        ADC_CHS0 = ADC_ANALOG_CHAN(0x17) | // 选则引脚对应的通道（0x17--P27）
+                   ADC_EXT_SEL(0x0);       // 选择外部通道
+        break;
 
     case ADC_SEL_PIN_KNOB:
-    {
-        ADC_ACON1 &= ~(ADC_VREF_SEL(0x7)); // 关闭外部参考电压、清除选择的参考电压
-        ADC_ACON1 |= ADC_VREF_SEL(0x6) |   // 选择内部参考电压VCCA
+        ADC_ACON1 |= ADC_VREF_SEL(0x6) |   // 选择内部参考电压VCCA （选择VCCA，需要不使能内部参考电压，也不使能外部参考电压）
                      ADC_TEN_SEL(0x3);     // 关闭测试信号
-        ADC_ACON0 = ADC_CMP_EN(0x1) |      // 打开ADC中的CMP使能信号
-                    ADC_BIAS_EN(0x1) |     // 打开ADC偏置电流能使信号
-                    ADC_BIAS_SEL(0x1);     // 偏置电流：1x
         ADC_CHS0 = ADC_ANALOG_CHAN(0x19) | // 选则引脚对应的通道（0x19--P31）
                    ADC_EXT_SEL(0x0);       // 选择外部通道
-    }
-    break;
+        break;
 
     case ADC_SEL_PIN_TEMP:
-    {
-        ADC_ACON1 &= ~(ADC_VREF_SEL(0x7) | ADC_EXREF_SEL(0) | ADC_INREF_SEL(0)); // 关闭外部参考电压
-        ADC_ACON1 |= ADC_VREF_SEL(0x6) |                                         // 选择内部参考电压 VCCA
-                     ADC_TEN_SEL(0x3);                                           // 关闭测试信号
-        ADC_ACON0 = ADC_CMP_EN(0x1) |                                            // 打开ADC中的CMP使能信号
-                    ADC_BIAS_EN(0x1) |                                           // 打开ADC偏置电流使能信号
-                    ADC_BIAS_SEL(0x1);                                           // 偏置电流：1x
-
+        ADC_ACON1 |= ADC_INREF_SEL(0x01) | // 选择内部参考电压 内部参考电压使能
+                     ADC_VREF_SEL(0x5) |   // 选择内部参考电压 4.2V
+                     ADC_TEN_SEL(0x3);     // 关闭测试信号
         ADC_CHS0 = ADC_ANALOG_CHAN(0x18) | // 选则引脚对应的通道（0x18--P30）
                    ADC_EXT_SEL(0x0);       // 选择外部通道
-    }
-    break;
+        break;
 
     case ADC_SEL_PIN_FAN:
-    {
-        ADC_ACON1 &= ~(ADC_VREF_SEL(0x7) | ADC_EXREF_SEL(0x01) | ADC_INREF_SEL(0)); // 关闭外部参考电压，不选择外部参考，清除选择的参考电压
-        ADC_ACON1 |= ADC_VREF_SEL(0x6) |                                            // 选择内部参考电压VCCA
-                     ADC_TEN_SEL(0x3);                                              // 关闭测试信号
-        ADC_ACON0 = ADC_CMP_EN(0x1) |                                               // 打开ADC中的CMP使能信号
-                    ADC_BIAS_EN(0x1) |                                              // 打开ADC偏置电流能使信号
-                    ADC_BIAS_SEL(0x1);                                              // 偏置电流：1x
-
+        ADC_ACON1 |= ADC_VREF_SEL(0x6) |   // 选择内部参考电压VCCA （选择VCCA，需要不使能内部参考电压，也不使能外部参考电压）
+                     ADC_TEN_SEL(0x3);     // 关闭测试信号
         ADC_CHS0 = ADC_ANALOG_CHAN(0x0B) | // 选则引脚对应的通道（0x0B--P13）
                    ADC_EXT_SEL(0x0);       // 选择外部通道
-    }
-    break;
+        break;
 
     default:
         break;
     }
 
+    __EnableIRQ(ADC_IRQn);          // 使能ADC中断
+    IE_EA = 1;                      // 使能总中断
     ADC_CFG0 |= ADC_CHAN0_EN(0x1) | // 使能通道0
                 ADC_EN(0x1);        // 使能adc
 }
