@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   ADC                                                               06/25/2026 15:54:21 PAGE 1   
+C51 COMPILER V9.60.7.0   ADC                                                               06/25/2026 15:55:35 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE ADC
@@ -62,7 +62,7 @@ line level    source
   50          void adc_channel_sel(u8 adc_sel_pin)
   51          {
   52   1          ADC_ACON1 &= ~(ADC_VREF_SEL(0x7) |   // 清除选择的参考电压
-C51 COMPILER V9.60.7.0   ADC                                                               06/25/2026 15:54:21 PAGE 2   
+C51 COMPILER V9.60.7.0   ADC                                                               06/25/2026 15:55:35 PAGE 2   
 
   53   1                         ADC_INREF_SEL(0x01) | // 不选择内部参考电压 内部参考电压不使能
   54   1                         ADC_EXREF_SEL(0x01)); // 不选择外部参考电压 外部参考电压不使能
@@ -126,7 +126,7 @@ line level    source
  109   2          }
  110   1      
  111   1          if (adc_val_from_temp == 0)
-C51 COMPILER V9.60.7.0   ADC                                                               06/25/2026 15:54:21 PAGE 3   
+C51 COMPILER V9.60.7.0   ADC                                                               06/25/2026 15:55:35 PAGE 3   
 
  112   1          {
  113   2              // ad值没有被adc中断更新，还是初始值0，直接返回
@@ -190,7 +190,7 @@ line level    source
  168   1          {
  169   2              if (adc_val <= ADC_VAL_WHEN_FAN_ERR)
  170   2              {
-C51 COMPILER V9.60.7.0   ADC                                                               06/25/2026 15:54:21 PAGE 4   
+C51 COMPILER V9.60.7.0   ADC                                                               06/25/2026 15:55:35 PAGE 4   
 
  171   3                  flag_tim_scan_fan_is_err = 1; // 表示风扇异常，让定时器累计时间
  172   3              }
@@ -254,7 +254,7 @@ line level    source
  228   4      
  229   4                      if (i < 20)
  230   4                          ADC_CFG0 |= 0x01 << 0; // 开启adc0转换
-C51 COMPILER V9.60.7.0   ADC                                                               06/25/2026 15:54:21 PAGE 5   
+C51 COMPILER V9.60.7.0   ADC                                                               06/25/2026 15:55:35 PAGE 5   
 
  231   4                  }
  232   3      
