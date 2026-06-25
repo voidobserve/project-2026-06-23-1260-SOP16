@@ -83,10 +83,17 @@ enum
     74 摄氏度,对应的电压是 3.1 V
     75 摄氏度时检测脚电压 3.0 V
     90 摄氏度时检测脚电压 2.38 V
+
+    使用4.2V参考电压，填2.38V，实际客户测试检测脚到了2.75V附近就触发了该阈值
 */
+/*
+    90 摄氏度时检测脚电压 2.38 V，这里加上了补偿
+*/ 
+#define ADC_VAL_VOLTAGE_WHEN_TEMP_90 ((u16)2380 - 500) 
+// #define ADC_VAL_VOLTAGE_WHEN_TEMP_90 ((u16)2380 - 370) 
 #define ADC_REV_VOLTAGE_IN_TEMPERATURE_SCAN ((u16)4200) // 检测温度时，adc使用的参考电压，单位：mV
 #define ADC_VAL_WHEN_TEMP_OVER_90 \
-    (u16)((u32)2380 * 4096 / ADC_REV_VOLTAGE_IN_TEMPERATURE_SCAN)
+    (u16)((u32)ADC_VAL_VOLTAGE_WHEN_TEMP_90 * 4096 / ADC_REV_VOLTAGE_IN_TEMPERATURE_SCAN)
 
 #if 0
 
